@@ -51,20 +51,6 @@ CREATE TABLE book (
 	CONSTRAINT publisher_fk FOREIGN KEY (publisher_id) REFERENCES publisher (publisher_id)
 );
 
-CREATE TABLE reader_book (
-        reader_book_book_ISBN TEXT,
-        reader_book_reader_ID BIGINT,
-
-        CONSTRAINT reader_book_pk PRIMARY KEY (reader_book_book_ISBN, reader_book_reader_ID)        
-);
-
-CREATE TABLE author_book (
-        author_book_book_ISBN TEXT,
-        author_book_reader_ID BIGINT,
-
-        CONSTRAINT author_book_pk PRIMARY KEY (author_book_book_ISBN, author_book_reader_ID)        
-);
-
 CREATE TABLE person (
         person_ID BIGINT,
         person_last_name TEXT,
@@ -93,10 +79,28 @@ CREATE TABLE reader (
 
 );
 
+CREATE TABLE reader_book (
+        book_ISBN TEXT,
+        reader_ID BIGINT,
+
+        CONSTRAINT reader_book_pk PRIMARY KEY (book_ISBN, reader_ID),
+        CONSTRAINT reader_fk FOREIGN KEY (reader_ID) REFERENCES reader (reader_ID),
+        CONSTRAINT book_fk FOREIGN KEY (book_ISBN) REFERENCES book (book_ISBN)        
+);
+
+CREATE TABLE author_book (
+        book_ISBN TEXT,
+        author_ID BIGINT,
+
+        CONSTRAINT author_book_pk PRIMARY KEY (book_ISBN, author_ID),
+        CONSTRAINT book_fk FOREIGN KEY (book_ISBN) REFERENCES book (book_ISBN),
+        CONSTRAINT author_fk FOREIGN KEY (author_ID) REFERENCES author (author_ID)        
+);
+
 CREATE TABLE commen (
         comment_ID BIGINT,
-        comment_content_path TEXT NOT NULL,
-        comment_date DATE NOT NULL,
+        comment_text TEXT NOT NULL, 
+        comment_date TIMESTAMP NOT NULL DEFAULT now(),
         book_ISBN TEXT,
         reader_ID BIGINT,    
 
@@ -105,3 +109,4 @@ CREATE TABLE commen (
         CONSTRAINT reader_fk FOREIGN KEY (reader_ID) REFERENCES reader (reader_ID)         
 
 );
+
