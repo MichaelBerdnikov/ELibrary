@@ -7,14 +7,17 @@ SELECT * FROM
 		 JOIN reader r ON p.person_id = r.reader_id
 	WHERE p.person_middle_name IS NOT NULL OR p.person_birthdate >= '1991-01-01';
 
+/*Все издатели из России*/
 SELECT * FROM publisher WHERE publusher_country = 'Russia';
 
+/*Книги, которые написаны авторами два или четыре*/
 SELECT * FROM
         book b JOIN author_book au ON b.book_ISBN = au.book_ISBN  
                JOIN author a ON au.author_id = a.author_id
                JOIN person p ON a.author_id = p.person_id                  
         WHERE p.person_id = 2 OR p.person_id = 4;  
 
+/*Имена и фамилии авторов тех книг, которые прочитал человек с именем Елена*/
 SELECT * FROM 
         person p JOIN author a ON p.person_id = a.author_id
                  JOIN author_book ab ON a.author_id = ab.author_id
@@ -23,6 +26,7 @@ SELECT * FROM
                  JOIN person pe ON r.reader_id = pe.person_id                 		 
 	WHERE pe.person_first_name = 'Elena';
 
+/*Авторы научных книг*/
 SELECT * FROM
         author a JOIN author_book ab ON a.author_id = ab.author_id
                  JOIN book b ON ab.book_ISBN = b.book_ISBN
@@ -30,6 +34,7 @@ SELECT * FROM
                  JOIN person p ON a.author_id = p.person_id 
         WHERE t.theme_name = 'Наука';
 
+/*Имена людей, которые делали комментарии в прошлом году*/
 SELECT * FROM 
         person p JOIN reader r ON p.person_id = r.reader_id
                  JOIN commen c ON r.reader_id = c.reader_id
