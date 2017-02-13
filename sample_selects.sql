@@ -51,22 +51,50 @@ SELECT p.publusher_country, p.publisher_city, p.publisher_street, p.publisher_ho
 	WHERE EXTRACT(MONTH FROM pe.person_birthdate) IN (01, 02, 12);
 
 /*Вывести фамилии людей, которые родились в високосные года*/
-SELECT person_last_name FROM person WHERE MOD ((EXTRACT(YEAR FROM person_birthdate) - 1988), 4) = 0; 
+SELECT person_last_name FROM person WHERE 
+	(MOD((EXTRACT(YEAR FROM person_birthdate))::integer, 4) = 0 
+	AND MOD((EXTRACT(YEAR FROM person_birthdate))::integer, 100) != 0)
+	OR MOD((EXTRACT(YEAR FROM person_birthdate))::integer, 400) = 0; 
 
 /*Вывести название самой читаемой книги(тут потребуется конструкции GROUP BY, MAX, MIN, COUNT - поищите в интернете)*/
-SELECT b.book_name FROM 
-        book b JOIN reader_book r ON b.book_ISBN = r.book_ISBN                                               		 
-	WHERE b.book_ISBN = max(count);
+WITH top_book AS (SELECT book_isbn
+FROM reader_book 
+GROUP BY book_ISBN
+ORDER BY COUNT(reader_id), book_isbn DESC
+LIMIT 1)
+SELECT book_name FROM book JOIN top_book USING (book_isbn);
+
+/*Вывести имя и фамилию самого старого человека*/
+WITH oldest_birthdate AS (SELECT person_birthdate 
+       FROM person
+       GROUP BY person_birthdate
+       ORDER BY person_birthdate ASC
+       LIMIT 1)
+       SELECT person_first_name, person_last_name FROM 
+              person JOIN oldest_birthdate USING (person_birthdate);  
+       
+/*Вывести название и имя автора наименее популярной книги*/
+WITH last_book AS (SELECT book_isbn
+FROM book JOIN reader_book USING (book_ISBN) 
+GROUP BY book_ISBN
+ORDER BY COUNT(reader_id), book_isbn ASC
+LIMIT 1)
+SELECT b.book_name, p.person_first_name, p.person_last_name FROM book b  
+       JOIN last_book l ON b.book_ISBN = l.book_ISBN
+       JOIN author_book a ON b.book_ISBN = a.book_ISBN
+       JOIN person p ON a.author_id = p.person_id;
+
+/*Вывести все информацию об издательстве с наибольшим количеством книг*/
+WITH top_publisher AS (SELECT publisher_id
+FROM book 
+GROUP BY book_ISBN
+ORDER BY COUNT(book_ISBN), book_ISBN DESC
+LIMIT 1)
+SELECT * FROM publisher JOIN top_publisher USING (publisher_id); 
 
 
-	(title, cost) in (SELECT title, max(cost) from friuits group by title);        
 
-	SELECT
- customer_id,
- COUNT (customer_id)
-FROM
- payment
-GROUP BY
- customer_id;
+
+
                  
  
