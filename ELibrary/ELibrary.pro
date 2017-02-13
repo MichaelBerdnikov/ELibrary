@@ -20,4 +20,7 @@ HEADERS  += mainwindow.h \
     loginwindow.h
 
 FORMS    += mainwindow.ui \
-    loginwindow.ui
+    regwindow.ui \
+    searchform.ui \
+    readingform.ui \
+    writingform.ui
