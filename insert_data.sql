@@ -53,3 +53,22 @@ INSERT INTO author_book (book_ISBN, author_ID) VALUES ('abc3', 4);
 INSERT INTO author_book (book_ISBN, author_ID) VALUES ('abc4', 4);
 INSERT INTO author_book (book_ISBN, author_ID) VALUES ('abc5', 5);
 
+UPDATE BOOK SET publisher_id = 2 WHERE right(book_isbn, 1) IN ('2', '1', 'c');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
