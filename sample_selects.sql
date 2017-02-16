@@ -60,7 +60,7 @@ SELECT person_last_name FROM person WHERE
 WITH top_book AS (SELECT book_isbn
 FROM reader_book 
 GROUP BY book_ISBN
-ORDER BY COUNT(reader_id), book_isbn DESC
+ORDER BY COUNT(reader_id) DESC, book_isbn DESC
 LIMIT 1)
 SELECT book_name FROM book JOIN top_book USING (book_isbn);
 
@@ -87,8 +87,9 @@ SELECT b.book_name, p.person_first_name, p.person_last_name FROM book b
 /*Вывести все информацию об издательстве с наибольшим количеством книг*/
 WITH top_publisher AS (SELECT publisher_id
 FROM book 
-GROUP BY book_ISBN
-ORDER BY COUNT(book_ISBN), book_ISBN DESC
+WHERE publisher_id IS NOT NULL
+GROUP BY publisher_id
+ORDER BY COUNT(book_ISBN) DESC
 LIMIT 1)
 SELECT * FROM publisher JOIN top_publisher USING (publisher_id); 
 
