@@ -14,13 +14,22 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    loginwindow.cpp
+    signinwindow.cpp \
+    readform.cpp \
+    writeform.cpp \
+    searchingform.cpp \
+    registerform.cpp
 
 HEADERS  += mainwindow.h \
-    loginwindow.h
+    signinwindow.h \
+    readform.h \
+    writeform.h \
+    searchingform.h \
+    registerform.h
 
-FORMS    += mainwindow.ui \
-    regwindow.ui \
-    searchform.ui \
-    readingform.ui \
-    writingform.ui
+FORMS    += \
+    signinwindow.ui \
+    readform.ui \
+    writeform.ui \
+    searchingform.ui \
+    registerform.ui
